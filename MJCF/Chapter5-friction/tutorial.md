@@ -27,8 +27,8 @@ $$
 
 $$
     \tau = \mu \cdot r \cdot F_\mathrm{normal}
-
 $$
+
 * $r$ 是滚动物体的半径
 * $F_\mathrm{normal}$ 是接触的法向力
 

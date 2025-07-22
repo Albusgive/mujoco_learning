@@ -2,7 +2,7 @@
     <compiler angle="radian" meshdir="meshes" autolimits="true" />
     <option timestep="0.01" gravity="0 0 -9.81" integrator="implicitfast" />
     <asset>
-        <texture type="skybox" file="/home/albusgive/CPP_space/mujoco_test/desert.png"
+        <texture type="skybox" file="../asset/desert.png"
             gridsize="3 4" gridlayout=".U..LFRB.D.." />
         <texture name="plane" type="2d" builtin="checker" rgb1=".1 .1 .1" rgb2=".9 .9 .9"
             width="512" height="512" mark="cross" markrgb=".8 .8 .8" />

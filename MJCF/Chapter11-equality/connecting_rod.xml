@@ -1,34 +1,28 @@
 <mujoco>
     <asset>
         <mesh name="tetrahedron" vertex="0 0 0 1 0 0 0 1 0 0 0 1" />
-        <texture type="skybox" file="../asset/desert.png"
-            gridsize="3 4" gridlayout=".U..LFRB.D.." />
-        <texture name="plane" type="2d" builtin="checker" rgb1=".1 .1 .1" rgb2=".9 .9 .9"
-            width="512" height="512" mark="cross" markrgb=".8 .8 .8" />
+        <texture type="skybox" file="../asset/desert.png" gridsize="3 4" gridlayout=".U..LFRB.D.." />
+        <texture name="plane" type="2d" builtin="checker" rgb1=".1 .1 .1" rgb2=".9 .9 .9" width="512" height="512" mark="cross" markrgb=".8 .8 .8" />
         <material name="plane" reflectance="0.3" texture="plane" texrepeat="1 1" texuniform="true" />
     </asset>
 
     <worldbody>
-        <geom name="floor" pos="0 0 0" size="0 0 .25" type="plane" material="plane"
-            condim="3" />
-        <light directional="true" ambient=".3 .3 .3" pos="30 30 30" dir="0 -.5 -1"
-            diffuse=".5 .5 .5" specular=".5 .5 .5" />
+        <geom name="floor" pos="0 0 0" size="0 0 .25" type="plane" material="plane" condim="3" />
+        <light directional="true" ambient=".3 .3 .3" pos="30 30 30" dir="0 -.5 -1" diffuse=".5 .5 .5" specular=".5 .5 .5" />
 
         <body name="red_b" pos="0 0 1">
             <geom type="ellipsoid" size="0.2 0.02 0.02" rgba="1 0 0 1" />
             <site name="red_connect" size="0.02" rgba="1 0 0 .5" pos="0.2 0 0" />
             <!-- <site size="0.05" rgba="0 1 0 .5" pos="0 0 0"/> -->
             <body name="green_b" pos="-0.2 0 -0.2" euler="0 90 0">
-                <geom type="ellipsoid" size="0.2 0.02 0.02" rgba="0 1 0 1" contype="2"
-                    conaffinity="2" />
+                <geom type="ellipsoid" size="0.2 0.02 0.02" rgba="0 1 0 1" contype="2" conaffinity="2" />
                 <joint name="j0" type="hinge" pos="-0.2 0 0" axis="0 1 0" damping="0" />
                 <body name="blue_b" pos="0.2 0 0.2" euler="0 -90 0">
                     <geom type="ellipsoid" size="0.2 0.02 0.02" rgba="0 0 1 1" />
                     <site name="blue_connect" size="0.02" rgba="0 0 1 .5" pos="0.2 0 0" />
                     <joint name="j1" type="hinge" pos="-0.2 0 0" axis="0 1 0" damping="0" />
                     <body name="white_b" pos="0.2 0 0.2" euler="0 -90 0">
-                        <geom type="ellipsoid" size="0.2 0.02 0.02" rgba="1 1 1 1" contype="2"
-                            conaffinity="2" />
+                        <geom type="ellipsoid" size="0.2 0.02 0.02" rgba="1 1 1 1" contype="2" conaffinity="2" />
                         <site name="white_connect" size="0.02" rgba="1 1 1 .5" pos="0.2 0 0" />
                         <joint name="j2" type="hinge" pos="-0.2 0 0" axis="0 1 0" damping="0" />
                     </body>
@@ -39,20 +33,16 @@
         <body pos="0.5 0 0">
             <geom type="cylinder" mass="100" size="0.05 0.5" rgba="0.2 0.2 0.2 1" />
             <body pos="0 0 0.51">
-                <joint type="hinge" name="pivot1" pos="0 0 0" axis="0 0 1" damping="0"
-                    frictionloss="0" stiffness="0" />
-                <geom type="capsule" mass="0.01" fromto="0 0 0 0.2 0 0" size="0.01"
-                    rgba="0.8 0.2 0.2 0.5" />
+                <joint type="hinge" name="pivot1" pos="0 0 0" axis="0 0 1" damping="0" frictionloss="0" stiffness="0" />
+                <geom type="capsule" mass="0.01" fromto="0 0 0 0.2 0 0" size="0.01" rgba="0.8 0.2 0.2 0.5" />
             </body>
         </body>
 
         <body pos="1 0 0">
             <geom type="cylinder" mass="100" size="0.05 0.5" rgba="1 1 1 1" />
             <body pos="0 0 0.51">
-                <joint type="hinge" name="pivot2" pos="0 0 0" axis="0 0 1" damping="0"
-                    frictionloss="0.0" stiffness="0" />
-                <geom type="capsule" mass="0.01" fromto="0 0 0 0.2 0 0" size="0.01"
-                    rgba="0.8 0.2 0.2 0.5" />
+                <joint type="hinge" name="pivot2" pos="0 0 0" axis="0 0 1" damping="0" frictionloss="0.0" stiffness="0" />
+                <geom type="capsule" mass="0.01" fromto="0 0 0 0.2 0 0" size="0.01" rgba="0.8 0.2 0.2 0.5" />
             </body>
         </body>
 
@@ -62,9 +52,9 @@
         <!-- <connect body1="red_b" body2="white_b" anchor="0.2 0 0"/> -->
 
         <!-- <connect site1="red_connect" site2="white_connect" /> -->
-        <weld site1="red_connect" site2="white_connect" torquescale="0"/>
+        <weld site1="red_connect" site2="white_connect" torquescale="0.5"/>
 
-        <joint joint1="pivot1" joint2="pivot2" polycoef="0 1 0 0 1"/>
+        <joint joint1="pivot1" joint2="pivot2" polycoef="0 1 0 0 0"/>
     </equality>
 
     <tendon>

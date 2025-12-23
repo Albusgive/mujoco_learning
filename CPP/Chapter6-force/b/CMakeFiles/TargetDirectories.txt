@@ -1,3 +1,0 @@
-/home/albusgive/mujoco_learning/CPP/Chapter6-force/b/CMakeFiles/force.dir
-/home/albusgive/mujoco_learning/CPP/Chapter6-force/b/CMakeFiles/edit_cache.dir
-/home/albusgive/mujoco_learning/CPP/Chapter6-force/b/CMakeFiles/rebuild_cache.dir

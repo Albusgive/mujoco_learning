@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/home/albusgive/mujoco_learning/CPP/Chapter6-force/build",
-  "command": "/usr/bin/clang++-14 -DmjUSEPLATFORMSIMD -I/home/albusgive/mujoco_learning/CPP/Chapter6-force/simulate -isystem /opt/mujoco/include -isystem /usr/local/include/opencv4 -g -o CMakeFiles/force.dir/force.cpp.o -c /home/albusgive/mujoco_learning/CPP/Chapter6-force/force.cpp",
-  "file": "/home/albusgive/mujoco_learning/CPP/Chapter6-force/force.cpp"
-}
-]

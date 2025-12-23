@@ -1,24 +1,18 @@
 <mujoco>
     <asset>
         <mesh name="tetrahedron" vertex="0 0 0 1 0 0 0 1 0 0 0 1" />
-        <texture type="skybox" file="../asset/desert.png"
-            gridsize="3 4" gridlayout=".U..LFRB.D.." />
-        <texture name="plane" type="2d" builtin="checker" rgb1=".1 .1 .1" rgb2=".9 .9 .9"
-            width="512" height="512" mark="cross" markrgb=".8 .8 .8" />
+        <texture type="skybox" file="../asset/desert.png" gridsize="3 4" gridlayout=".U..LFRB.D.." />
+        <texture name="plane" type="2d" builtin="checker" rgb1=".1 .1 .1" rgb2=".9 .9 .9" width="512" height="512" mark="cross" markrgb=".8 .8 .8" />
         <material name="plane" reflectance="0.3" texture="plane" texrepeat="1 1" texuniform="true" />
-        <texture name="y2c" type="cube" builtin="gradient" rgb1="1 1 0" rgb2="0 1 1"
-            width="512" height="512" />
+        <texture name="y2c" type="cube" builtin="gradient" rgb1="1 1 0" rgb2="0 1 1" width="512" height="512" />
         <material name="y2c" reflectance="0.3" texture="y2c" texrepeat="1 1" texuniform="true" />
-        <texture name="r2b" type="cube" builtin="gradient" rgb1="1 0 0" rgb2="0 0 1"
-            width="512" height="512" />
+        <texture name="r2b" type="cube" builtin="gradient" rgb1="1 0 0" rgb2="0 0 1" width="512" height="512" />
         <material name="r2b" reflectance="0.3" texture="r2b" texrepeat="1 1" texuniform="true" />
     </asset>
 
     <worldbody>
-        <geom name="floor" pos="0 0 0" size="0 0 .25" type="plane" material="plane"
-            condim="3" />
-        <light directional="true" ambient=".3 .3 .3" pos="30 30 30" dir="0 -.5 -1"
-            diffuse=".5 .5 .5" specular=".5 .5 .5" />
+        <geom name="floor" pos="0 0 0" size="0 0 .25" type="plane" material="plane" condim="3" />
+        <light directional="true" ambient=".3 .3 .3" pos="30 30 30" dir="0 -.5 -1" diffuse=".5 .5 .5" specular=".5 .5 .5" />
 
         <composite type="particle" prefix="bullet" count="5 5 5" spacing="0.01" offset="1 1 1">
             <geom type="sphere" size="0.0084" material="y2c" mass="0.0032" />

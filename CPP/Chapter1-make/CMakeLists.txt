@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 project(MUJOCO_T)
+set(CMAKE_CXX_STANDARD 17)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/simulate)
 
 #编译安装，从cmake安装位置opt使用
@@ -30,8 +31,8 @@ target_link_libraries(basic mujoco::mujoco glut GL GLU glfw)
 
 
 #simulate编译
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/simulate)
-link_directories(${CMAKE_CURRENT_SOURCE_DIR}/simulate)
-file(GLOB SIMULATE_SRC ${CMAKE_CURRENT_SOURCE_DIR}/simulate/*.cc)
-add_executable(simulate ${SIMULATE_SRC})
-target_link_libraries(simulate mujoco::mujoco glut GL GLU glfw lodepng)
+# include_directories(${CMAKE_CURRENT_SOURCE_DIR}/simulate)
+# link_directories(${CMAKE_CURRENT_SOURCE_DIR}/simulate)
+# file(GLOB SIMULATE_SRC ${CMAKE_CURRENT_SOURCE_DIR}/simulate/*.cc)
+# add_executable(simulate ${SIMULATE_SRC})
+# target_link_libraries(simulate mujoco::mujoco glut GL GLU glfw lodepng)

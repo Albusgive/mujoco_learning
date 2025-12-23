@@ -1,3 +1,0 @@
-/home/albusgive/mujoco_learning/CPP/Chapter7-vis_cfg/b/CMakeFiles/vis_cfg.dir
-/home/albusgive/mujoco_learning/CPP/Chapter7-vis_cfg/b/CMakeFiles/edit_cache.dir
-/home/albusgive/mujoco_learning/CPP/Chapter7-vis_cfg/b/CMakeFiles/rebuild_cache.dir

@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 project(MUJOCO_T)
+set(CMAKE_CXX_STANDARD 17)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/simulate)
 
 #编译安装，从cmake安装位置opt使用

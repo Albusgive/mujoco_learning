@@ -1,3 +1,0 @@
-/home/albusgive/mujoco_learning/CPP/Chapter8-ray/b/CMakeFiles/ray.dir
-/home/albusgive/mujoco_learning/CPP/Chapter8-ray/b/CMakeFiles/edit_cache.dir
-/home/albusgive/mujoco_learning/CPP/Chapter8-ray/b/CMakeFiles/rebuild_cache.dir

@@ -375,11 +375,12 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.font = "11px Inter, sans-serif";
     ctx.fillStyle = "#9ca3af";
 
-    const padding = { left: 50, right: 50, top: 40, bottom: 40 };
+    const padding = { left: 65, right: 50, top: 40, bottom: 40 };
     const graphW = w - padding.left - padding.right;
     const graphH = h - padding.top - padding.bottom;
 
     // Draw horizontal grid lines (Y-axis grid)
+    ctx.textAlign = "right";
     for (let i = 0; i <= 4; i++) {
       const yVal = i / 4;
       const py = padding.top + graphH * (1 - yVal);
@@ -388,13 +389,14 @@ document.addEventListener("DOMContentLoaded", () => {
       ctx.lineTo(w - padding.right, py);
       ctx.stroke();
       if (scaleMode === "normalized") {
-        ctx.fillText(yVal.toFixed(2), padding.left - 30, py + 4);
+        ctx.fillText(yVal.toFixed(2), padding.left - 8, py + 4);
       } else {
-        ctx.fillText((yVal * 100).toFixed(0) + "%", padding.left - 35, py + 4);
+        ctx.fillText((yVal * 100).toFixed(0) + "%", padding.left - 8, py + 4);
       }
     }
 
     // Draw vertical grid lines (X-axis grid)
+    ctx.textAlign = "center";
     const maxX = width * 1.5;
     for (let i = 0; i <= 3; i++) {
       const xVal = (i / 3) * maxX;
@@ -403,24 +405,27 @@ document.addEventListener("DOMContentLoaded", () => {
       ctx.moveTo(px_fill, padding.top);
       ctx.lineTo(px_fill, h - padding.bottom);
       ctx.stroke();
-      ctx.fillText(xVal.toFixed(4), px_fill - 15, h - padding.bottom + 16);
+      ctx.fillText(xVal.toFixed(4), px_fill, h - padding.bottom + 16);
     }
 
     // Labels
+    ctx.textAlign = "center";
     ctx.fillStyle = "#374151";
-    ctx.fillText("渗透深度 r (m)", w / 2 - 30, h - 10);
+    ctx.fillText("渗透深度 r (m)", padding.left + graphW / 2, h - 10);
     
     // Y-Axis titles
     ctx.save();
-    ctx.translate(15, h / 2 + 30);
+    ctx.translate(18, padding.top + graphH / 2);
     ctx.rotate(-Math.PI / 2);
     ctx.fillStyle = "#0f766e";
+    ctx.textAlign = "center";
     if (scaleMode === "normalized") {
       ctx.fillText("阻抗 / 归一化强度", 0, 0);
     } else {
-      ctx.fillText("阻抗及强度百分比 (%)", 0, 0);
+      ctx.fillText("阻抗及物理值占比 (%)", 0, 0);
     }
     ctx.restore();
+    ctx.textAlign = "left"; // Reset to default
 
     // Draw curves
     const points = 100;

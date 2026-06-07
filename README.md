@@ -94,6 +94,13 @@ uvicorn mujoco_learning_doc.main:app --reload --host 127.0.0.1 --port 8000
 - `skills/mujoco-teaching`：教学型。用于向 agent 提问 MuJoCo 概念、教程内容、学习路线和 API 原理。
 - `skills/mujoco-engineering`：工程型。用于让 agent 复现示例、开发 MJCF/Python/C++ MuJoCo 功能、查找对应教程代码路径。
 
+同时提供 OpenCode 和 Claude Code 的项目级适配入口：
+
+- OpenCode：`.opencode/skills/mujoco-teaching`、`.opencode/skills/mujoco-engineering`
+- Claude Code：`.claude/skills/mujoco-teaching`、`.claude/skills/mujoco-engineering`
+
+这些适配入口会引用 `skills/` 下的 canonical skill 内容，避免维护多份重复说明。
+
 发布到 GitHub 后，可用 Codex 的 `skill-installer` 从仓库路径安装：
 
 ```bash

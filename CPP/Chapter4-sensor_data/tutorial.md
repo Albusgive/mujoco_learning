@@ -1,9 +1,15 @@
 # 传感器数据获取
 
-![](../../MJCF/asset/sensor_adr.png)
-**sensordata的索引需要依靠mjData的sensor_adr获取，这个可以使用sensor的id**
-**这个我们要注意传感器具有的数据量，有的传感器是一个值，而有的传感器是三个值。我们可以使用mjModel中的sensor_dim获得传感器输出的参数量**
-<font color=Green>*演示：*</font>
+**`sensordata` 的索引需要依靠 `mjModel` 中的 `sensor_adr` 获取，也可以使用 sensor 的 id。**
+
+**我们要注意传感器具有的数据量，有的传感器是一个值，而有的传感器是三个值。我们可以使用 `mjModel` 中的 `sensor_dim` 获得传感器输出的参数量。**
+
+* `mjModel.sensor_adr` 的定义类似于：
+```cpp
+int*    sensor_adr;             // address in sensor array        (nsensor x 1)
+```
+
+演示：
 
 ```C++
 std::vector<float> get_sensor_data(const mjModel *model, const mjData *data,
@@ -21,8 +27,24 @@ std::vector<float> get_sensor_data(const mjModel *model, const mjData *data,
   return sensor_data;
 }
 ```
-对于传感器其他的属性在 mjModel中可以直接获得。如下：
-![](../../MJCF/asset/modelsensors.png)
+
+对于传感器的其他属性，在 `mjModel` 中可以直接获得：
+```cpp
+// mjModel 中的传感器相关成员变量说明
+int*      sensor_type;       // 传感器类型 (mjtSensor)          (nsensor x 1)
+int*      sensor_datatype;   // 数值数据类型 (mjtDataType)       (nsensor x 1)
+int*      sensor_needstage;  // 所需 Jun 算阶段 (mjtStage)       (nsensor x 1)
+int*      sensor_objtype;    // 被测物体的类型 (mjtObj)          (nsensor x 1)
+int*      sensor_objid;      // 被测物体的 ID                   (nsensor x 1)
+int*      sensor_reftype;    // 参考系物体的类型 (mjtObj)         (nsensor x 1)
+int*      sensor_refid;      // 参考系物体的 ID; -1: 全局参考系   (nsensor x 1)
+int*      sensor_dim;        // 标量输出的数量                  (nsensor x 1)
+int*      sensor_adr;        // 传感器数据在 sensordata 中的地址 (nsensor x 1)
+mjtNum*   sensor_cutoff;     // 实数/正数的截止值; 0: 忽略        (nsensor x 1)
+mjtNum*   sensor_noise;      // 噪声音频标准差                   (nsensor x 1)
+mjtNum*   sensor_user;       // 用户数据                        (nsensor x nuser_sensor)
+int*      sensor_plugin;     // 插件实例 ID; -1: 非插件          (nsensor x 1)
+```
 
 ### 读取相机画面
 &emsp;&emsp;相机来源一般是在模型文件中创建相机，或者创建一个相机手动控制，就像 base中

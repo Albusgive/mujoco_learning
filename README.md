@@ -123,8 +123,11 @@ uvicorn mujoco_learning_doc.main:app --reload --host 127.0.0.1 --port 8000
 
 ### 4. Codex
 * **通过 skill-installer 从 GitHub 远程安装**：
+  使用 Codex 的 `skill-installer` 直接从 GitHub 地址进行安装：
   ```bash
-  python -m skill_installer --repo Albusgive/mujoco_learning --path skills/mujoco-teaching skills/mujoco-engineering skills/mujoco-cpp-build
+  skill-installer install https://github.com/Albusgive/mujoco_learning/tree/main/skills/mujoco-teaching
+  skill-installer install https://github.com/Albusgive/mujoco_learning/tree/main/skills/mujoco-engineering
+  skill-installer install https://github.com/Albusgive/mujoco_learning/tree/main/skills/mujoco-cpp-build
   ```
 * **本地手动安装**：直接将技能文件夹拷贝至 Codex 本地技能存储路径：
   ```bash

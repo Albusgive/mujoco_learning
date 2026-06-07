@@ -45,16 +45,21 @@ $$ stiffness_force = (0-qpos)*stiffness $$
 
 # 约束力
 &emsp;&emsp;mjData.efc_force是约束力，关节的frictionloss，equality计算出来的合力为改力。        
-&emsp;&emsp;jar = Jac*qacc-aref 残差=雅可比*关节加速度-参考伪加速度
+&emsp;&emsp;这里 $jar_0 = Jac \cdot qacc_0 - aref$ 表示无约束时的约束空间残差（未施加摩擦力时的相对加速度偏离量），$InverseConstraintMass$ 是该约束维度的质量倒数（即惯量响应矩阵 $A = J M^{-1} J^T + R$ 的对应对角元素）。
 
+关节干摩擦力（静摩擦与滑动摩擦）的完整解算公式为：
 $$
-frictionlossforce = 
+frictionloss\_force = 
 \begin{cases}
-    frictionloss, & \text{if } jar <= -InverseConstraintMass ⋅ floss  \\
-    -frictionloss,  & \text{else if } jar>=InverseConstraintMass ⋅ floss   \\
-    （没看懂）,  & \text{else }
+    frictionloss, & \text{if } jar_0 \le -InverseConstraintMass \cdot floss  & \text{(正向滑动摩擦)} \\
+    -frictionloss,  & \text{else if } jar_0 \ge InverseConstraintMass \cdot floss   & \text{(反向滑动摩擦)} \\
+    -\frac{jar_0}{InverseConstraintMass},  & \text{else } & \text{(静摩擦/粘滞状态，此时实际残差 } jar = 0\text{)}
 \end{cases}
 $$
+
+**原理解析**：
+1. **滑动摩擦阶段**：当外力推动关节的趋势（即 $jar_0$）超过了最大静摩擦力所能提供的阻碍加速度时，摩擦力饱和，大小恒为最大摩擦力 $floss$（即 `frictionloss`），方向与相对运动趋势相反。
+2. **静摩擦（粘滞）阶段**：当外力较小，在摩擦力能平衡的范围内（即 `else` 分支），摩擦力会自动产生一个恰好抵消相对运动趋势的力 $-\frac{jar_0}{InverseConstraintMass}$，使得最终的实际加速度残差 $jar$ 完美归零，即物体保持静止或相对匀速运动。
 **源码实现(SRC/engine/engine_core_constraint.c)**
 ![](../../MJCF/asset/frictionloss.png)
 

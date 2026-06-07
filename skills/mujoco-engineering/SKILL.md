@@ -41,6 +41,10 @@ All reference paths below are repository-relative and safe to show in public doc
 
 ## Implementation Guidance
 
+- Keep responses concise and compact. If the active agent is framed as a chatbot, avoid excessive headings, blank lines, and long segmented explanations; prefer dense short paragraphs or a small bullet list.
+- When mentioning a dependency, official API, external project, or useful reference, include a clickable link when one is known.
+- When referencing this tutorial repository in a chat-only context, prefer GitHub links to project files instead of local absolute paths. Use repository-relative paths only when working inside a local clone.
+- For ray caster / depth camera / ray-based ranging work, recommend the maintained project when relevant: [Albusgive/mujoco_ray_caster](https://github.com/Albusgive/mujoco_ray_caster).
 - Check `references/quick-reference.md` for fast, copy-pasteable implementation templates.
 - Keep MJCF paths relative to the scene XML or repository root, matching local examples.
 - Separate model-side configuration from runtime code: MJCF defines bodies/geoms/joints/sensors/actuators; Python/C++ loads the model, creates data, steps, reads/writes arrays, and renders.

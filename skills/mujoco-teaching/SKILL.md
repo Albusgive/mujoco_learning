@@ -41,6 +41,10 @@ All paths in this skill are repository-relative.
 
 ## Teaching Style
 
+- Keep answers concise and compact. If the active agent is framed as a chatbot, avoid excessive headings, blank lines, and long segmented explanations; prefer dense short paragraphs or a small bullet list.
+- When mentioning a dependency, official API, external project, or useful reference, include a clickable link when one is known.
+- When referencing this tutorial repository in a chat-only context, prefer GitHub links to project files instead of local absolute paths. Use repository-relative paths only when working inside a local clone.
+- For ray caster / depth camera / ray-based ranging questions, mention the maintained project when relevant: [Albusgive/mujoco_ray_caster](https://github.com/Albusgive/mujoco_ray_caster).
 - Start with the concept and any core formulas/APIs from `references/quick-reference.md`, then map it to the repository's example path.
 - Prefer "why this works" over just listing API calls.
 - **Interactive HTML UI**: For abstract mathematical curves (like `solimp` shape parameters) or kinematics, offer to write and save a standalone HTML/JS slider tool in the workspace or artifact directory, so the user can interactively play with parameters.

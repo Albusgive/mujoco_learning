@@ -7,11 +7,18 @@ description: Use when building C++ examples, compiling simulation executables, c
 
 Use this skill to automate the building of C++ chapters and simulate tools in the repository. This supports both **Source-built Install** (e.g., `/opt/mujoco`) and **Pre-compiled Release** (custom directory) options.
 
+## Response Style
+
+- Keep answers concise and compact. If the active agent is framed as a chatbot, avoid excessive headings, blank lines, and long segmented explanations; prefer dense short paragraphs or a small bullet list.
+- When mentioning a dependency, official API, external project, or useful reference, include a clickable link when one is known.
+- When referencing this tutorial repository in a chat-only context, prefer GitHub links to project files instead of local absolute paths. Use repository-relative paths only when working inside a local clone.
+- If the build/debug task involves ray caster examples, mention the maintained project when relevant: [Albusgive/mujoco_ray_caster](https://github.com/Albusgive/mujoco_ray_caster).
+
 ## CRITICAL: Active Prompting Requirement
 Before starting any compilation or editing of `CMakeLists.txt`, **you must actively ask the user** for their compilation requirements. Use a clear, formatted message (or ask_question tool if appropriate) to align on:
 1. **MuJoCo Library Choice**:
    - Option A: Source-built and installed to standard path `/opt/mujoco` (using `find_package(mujoco REQUIRED PATHS /opt/mujoco/lib/cmake NO_DEFAULT_PATH)`).
-   - Option B: Pre-compiled Release or Source-built in a custom directory (e.g. `/home/user/mujoco-3.3.1`).
+   - Option B: Pre-compiled Release or Source-built in a custom directory (e.g. `/path/to/mujoco-3.3.1`).
 2. **Custom Directory Path** (Only if Option B is chosen): Ask the user to provide the absolute path to their MuJoCo directory.
 3. **Target Chapter**: Which chapter or executable to compile (e.g., `CPP/Chapter1-make/basic`, `CPP/Chapter2-view&step`, or "All").
 

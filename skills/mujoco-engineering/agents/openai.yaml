@@ -1,0 +1,7 @@
+interface:
+  display_name: "MuJoCo Engineering"
+  short_description: "Build MuJoCo scenes and API code from examples"
+  brand_color: "#0F766E"
+  default_prompt: "Use $mujoco-engineering to implement a MuJoCo sensor example from the repository patterns."
+policy:
+  allow_implicit_invocation: true

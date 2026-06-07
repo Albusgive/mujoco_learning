@@ -1,0 +1,7 @@
+interface:
+  display_name: "MuJoCo Teaching"
+  short_description: "Explain MuJoCo using this tutorial repo"
+  brand_color: "#0F766E"
+  default_prompt: "Use $mujoco-teaching to explain MuJoCo sensors from the local tutorial and official docs."
+policy:
+  allow_implicit_invocation: true

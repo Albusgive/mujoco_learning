@@ -93,5 +93,7 @@
 > - mujoco中碰撞模型，如何通过调整动态“弹簧-阻尼”模型让模型展现不同材料的碰撞效果,对于碰撞和穿模问题如何调整
 > > [soft contact(mjcf&C++&Python)](extend/soft_contact/tutorial.md)
 >
-> 雷达/深度相机(基于ray)
-> - 通过mujoco中的ray实现雷达和深度相机传感器，后续推广到mjx
+> Ray Caster(基于ray)
+> - 通过mujoco中的ray实现雷达、深度相机和自定义测距传感器
+> > [ray caster](extend/deep_camera/readme.md)
+> > [独立仓库：Albusgive/mujoco_ray_caster](https://github.com/Albusgive/mujoco_ray_caster)

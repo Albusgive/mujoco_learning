@@ -18,8 +18,11 @@
 <div id="solver-visualizer-container"></div>
 
 **在这里把碰撞拆解成了下面公式**          
+
 $$a_{ref}=-bv-kr$$      
+
 $$a_{1}=(1-d) \cdot a_{0}-d \cdot a_{ref}$$     
+
 > a1:计算之后的加速度
 > a0:无约束时的加速度
 > v :速度
@@ -38,8 +41,11 @@ $$a_{1}=(1-d) \cdot a_{0}-d \cdot a_{ref}$$
 >- power：控制d变化曲线，会使曲线变化的“更快”
 
 **计算公式**        
+
 $$x_{\text{normal}} = \frac{|r|}{\text{width}}$$        
+
 $$a = \frac{1}{\text{midpoint}^{\text{power}-1}}$$      
+
 $$b = \frac{1}{(1 - \text{midpoint})^{\text{power}-1}}$$        
 
 $$Y(x) = \{
@@ -116,7 +122,9 @@ static void getimpedance(const mjtNum* solimp, mjtNum pos, mjtNum margin, mjtNum
 >- dampratio：会影响k,数值越小k越大，一般设置为1,数值过小会阻尼不够或弹性不足，数值过大会约束过过度
 
 **计算公式**        
+
 $$b=\frac{2}{d_{width} \cdot timeconst}$$       
+
 $$k=\frac{d(r)}{d_{width} \cdot timeconst^2 \cdot dampratio^2}$$        
 
 > 参数为负值(-stiffness,-damping)
@@ -124,7 +132,9 @@ $$k=\frac{d(r)}{d_{width} \cdot timeconst^2 \cdot dampratio^2}$$
 >- damping：与d，d<sub>width</sub>一起影响b值
 
 **计算公式**        
+
 $$b=\frac{damping}{d_{width}}$$     
+
 $$k=\frac{stiffness \cdot d(r)}{d_{width}^2}$$      
 
 [**desmos**](https://www.desmos.com/calculator/irtgrwjpkb?lang=zh-CN)       
@@ -203,7 +213,9 @@ else {
 ## 调整思路             
 **可以从pd控制器和碰撞曲线两个方面分析碰撞**        
 ### PD          
+
 $$a_{ref}=-bv-kr$$          
+
 由这个公式可以分析出，如果我们想抑制陷入深度（穿模），那需要增大刚度k的参数，如果碰撞弹性很大或者是接触时抖动剧烈，可能是阻尼b不够      
 ### 碰撞曲线    
 碰撞曲线计算出d参数，会根据陷入深度动态调节pd控制器的比例        

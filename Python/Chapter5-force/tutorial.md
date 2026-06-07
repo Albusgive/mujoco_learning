@@ -1,8 +1,12 @@
 # 作用力
 **平动**      
+
 $$ m \cdot a = F $$
+
 **旋转**
+
 $$ I \cdot \alpha = \tau $$  
+
 $$ F/\tau = 外部力+驱动力+被动力+约束力+偏置力 $$  
 
 # 外部力
@@ -63,7 +67,9 @@ mjtNum* qfrc_actuator;     // actuator generalized force            (nv x 1)
 
 # 被动力
 &emsp;&emsp;mjData.qfrc_passive是被动力，关节参数的damping，stiffness,摩擦力，流体阻力都会最终计算到改力中。        
+
 $$ damping_force = (0-qvel)*damping $$
+
 $$ stiffness_force = (0-qpos)*stiffness $$
 
 # 约束力
@@ -74,6 +80,7 @@ mjtNum* efc_force;         // constraint force                      (nefc x 1)
 &emsp;&emsp;这里 $jar_0 = Jac \cdot qacc_0 - aref$ 表示无约束时的约束空间残差（未施加摩擦力时的相对加速度偏离量），$InverseConstraintMass$ 是该约束维度的质量倒数（即惯量响应矩阵 $A = J M^{-1} J^T + R$ 的对应对角元素）。
 
 关节干摩擦力（静摩擦与滑动摩擦）的完整解算公式为：
+
 $$
 frictionloss\_force = 
 \begin{cases}

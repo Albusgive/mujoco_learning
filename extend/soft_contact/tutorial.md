@@ -2,7 +2,12 @@
 ***&emsp;&emsp;软接触由geom中的solimp和solref参数调控***
 &emsp;&emsp;虽然geom在mujoco中是刚体，但是通过soft contact可以近似现实中物体碰撞时发生的形变，比如刚性比较强的物体发生的微小变形，又或者是一个可以通过缓冲力的物体，又或者是一个很有弹性的橡皮球，这些在mujoco的刚体中可以通过soft contact近似出这些物体的碰撞情况       
 ![](../../MJCF/asset/contact.gif)       
-![](../../MJCF/asset/soft_solver_param.png)     
+
+| 属性名称 | 参数类型 | 默认值 | 物理含义 (正数格式) | 物理含义 (负数格式) |
+| :--- | :--- | :--- | :--- | :--- |
+| **`solref`** | `mjtNum[2]` | `0.02, 1.0` | `(timeconst, dampratio)`<br>• `timeconst`: 时间常数，控制回弹反应速度<br>• `dampratio`: 阻尼比，控制回弹振荡幅度（1 为临界阻尼） | `(-stiffness, -damping)`<br>• `stiffness`: 直接指定虚拟弹簧刚度 $k$<br>• `damping`: 直接指定虚拟弹簧阻尼 $b$ |
+| **`solimp`** | `mjtNum[5]` | `0.9, 0.95, 0.001, 0.5, 2` | `(dmin, dmax, width, midpoint, power)`<br>• `dmin`: 阻抗的最小值<br>• `dmax`: 阻抗的最大值<br>• `width`: 过渡区域的穿透深度宽度<br>• `midpoint`: 分段过渡曲线的分界点 (0 到 1 之间)<br>• `power`: 曲线的幂次 | - |
+
 [公式计算可视化（desmos）](https://www.desmos.com/calculator/irtgrwjpkb?lang=zh-CN)         
 **在这里把碰撞拆解成了下面公式**          
 $$a_{ref}=-bv-kr$$      
@@ -46,7 +51,54 @@ $$d\left(x_{normal}\right) = d_{0} + Y\left(x_{normal}\right) \left( d_{\text{wi
 **源码位置**        
 engine/engine_core_constraint.c:        
 static void getimpedance(const mjtNum* solimp, mjtNum pos, mjtNum margin,mjtNum* imp, mjtNum* impP)     
-![](../../MJCF/asset/compute_solimp.png)        
+```c
+static void getimpedance(const mjtNum* solimp, mjtNum pos, mjtNum margin, mjtNum* imp, mjtNum* impP) {
+  // flat function
+  if (solimp[0] == solimp[1] || solimp[2] <= mjMINVAL) {
+    *imp = 0.5*(solimp[0] + solimp[1]);
+    *impP = 0;
+    return;
+  }
+
+  // x = abs((pos-margin) / width)
+  mjtNum x = (pos-margin) / solimp[2];
+  mjtNum sgn = 1;
+  if (x < 0) {
+    x = -x;
+    sgn = -1;
+  }
+
+  // clamp x to [0, 1]
+  if (x >= 1) {
+    *imp = solimp[1];
+    *impP = 0;
+    return;
+  }
+
+  // linear or power transition
+  mjtNum y, yP;
+  if (solimp[4] == 1) {
+    y = x;
+    yP = 1;
+  }
+  // y(x) = a*x^p if x<=midpoint
+  else if (x <= solimp[3]) {
+    mjtNum a = 1 / mju_pow(solimp[3], solimp[4]-1);
+    y = a * mju_pow(x, solimp[4]);
+    yP = solimp[4] * a * mju_pow(x, solimp[4]-1);
+  }
+  // y(x) = 1-b*(1-x)^p if x>midpoint
+  else {
+    mjtNum b = 1 / mju_pow(1-solimp[3], solimp[4]-1);
+    y = 1 - b * mju_pow(1-x, solimp[4]);
+    yP = solimp[4] * b * mju_pow(1-x, solimp[4]-1);
+  }
+
+  // scale
+  *imp = solimp[0] + y*(solimp[1]-solimp[0]);
+  *impP = yP * sgn * (solimp[1]-solimp[0]) / solimp[2];
+}
+```
 
 ## solref参数       
 **这个参数影响公式中的k,b**     
@@ -72,8 +124,38 @@ $$k=\frac{stiffness \cdot d(r)}{d_{width}^2}$$
 **源码位置**        
 engine/engine_core_constraint.c:        
 void mj_makeImpedance(const mjModel* m, mjData* d)      
-![](../../MJCF/asset/coompute_solref.png)       
-![](../../MJCF/asset/coompute_solref2.png)      
+```c
+// ... inside mj_makeImpedance
+// set R and KBIP for all constraint dimensions
+for (int j=0; j < dim; j++) {
+    // ...
+    // friction: K = 0
+    if (tp == mjCNSTR_FRICTION_DOF || tp == mjCNSTR_FRICTION_TENDON || elliptic_friction) {
+        KBIP[4*(i+j)] = 0;
+    }
+    // standard: K = 1 / (d_width^2 * timeconst^2 * dampratio^2)
+    else if (ref[0] > 0) {
+        KBIP[4*(i+j)] = 1 / mju_max(mjMINVAL, solimp[1]*solimp[1] * ref[0]*ref[0] * ref[1]*ref[1]);
+    }
+    // direct: K = -solref[0] / d_width^2
+    else {
+        KBIP[4*(i+j)] = -ref[0] / mju_max(mjMINVAL, solimp[1]*solimp[1]);
+    }
+
+    // standard: B = 2 / (d_width*timeconst)
+    if (ref[1] > 0) {
+        KBIP[4*(i+j)+1] = 2 / mju_max(mjMINVAL, solimp[1]*ref[0]);
+    }
+    // direct: B = -solref[1] / d_width
+    else {
+        KBIP[4*(i+j)+1] = -ref[1] / mju_max(mjMINVAL, solimp[1]);
+    }
+    
+    // I = imp, P = imp'
+    KBIP[4*(i+j)+2] = imp;
+    KBIP[4*(i+j)+3] = impP;
+}
+```
 
 ## solimp和solref的混合规则         
 > 情况一：根据priority的大小，选择两个碰撞geom中priority大的solimp和solref参数     
@@ -83,7 +165,32 @@ void mj_makeImpedance(const mjModel* m, mjData* d)
    
 源码位置：engine/engine_collision_driver.c: 
 mj_contactParam         
-![](../../MJCF/asset/mix_con.png)
+```c
+// compute solver mix factor
+mjtNum mix;
+if (solmix1 >= mjMINVAL && solmix2 >= mjMINVAL) {
+    mix = solmix1 / (solmix1 + solmix2);
+} else if (solmix1 < mjMINVAL && solmix2 < mjMINVAL) {
+    mix = 0.5;
+} else if (solmix1 < mjMINVAL) {
+    mix = 0.0;
+} else {
+    mix = 1.0;
+}
+
+// reference standard: mix
+if (solref1[0] > 0 && solref2[0] > 0) {
+    for (int i=0; i < mjNREF; i++) {
+        solref[i] = mix*solref1[i] + (1-mix)*solref2[i];
+    }
+}
+// reference direct: min
+else {
+    for (int i=0; i < mjNREF; i++) {
+        solref[i] = mju_min(solref1[i], solref2[i]);
+    }
+}
+```
 
 ## 调整思路             
 **可以从pd控制器和碰撞曲线两个方面分析碰撞**        

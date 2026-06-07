@@ -1,0 +1,24 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${workspaceFolder}/.vscode/browse.vc.db",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/albusgive2/unitree_ros2/cyclonedds_ws/install/unitree_hg/include/**",
+        "/home/albusgive2/unitree_ros2/cyclonedds_ws/install/unitree_go/include/**",
+        "/home/albusgive2/unitree_ros2/cyclonedds_ws/install/unitree_api/include/**",
+        "/home/albusgive2/rlfw/rlfw_interface/install/rlfw_msgs/include/**",
+        "/opt/ros/humble/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ros2",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++17"
+    }
+  ],
+  "version": 4
+}

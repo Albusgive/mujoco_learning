@@ -2,5 +2,21 @@
     "cmake.sourceDirectory": "/home/albusgive2/mujoco_learning/CPP/Chapter1-make",
     "python-envs.defaultEnvManager": "ms-python.python:conda",
     "python-envs.defaultPackageManager": "ms-python.python:conda",
-    "python-envs.pythonProjects": []
+    "ROS2.distro": "humble",
+    "python.autoComplete.extraPaths": [
+        "/home/albusgive2/unitree_ros2/cyclonedds_ws/install/unitree_hg/local/lib/python3.10/dist-packages",
+        "/home/albusgive2/unitree_ros2/cyclonedds_ws/install/unitree_go/local/lib/python3.10/dist-packages",
+        "/home/albusgive2/unitree_ros2/cyclonedds_ws/install/unitree_api/local/lib/python3.10/dist-packages",
+        "/home/albusgive2/rlfw/rlfw_interface/install/rlfw_msgs/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/albusgive2/unitree_ros2/cyclonedds_ws/install/unitree_hg/local/lib/python3.10/dist-packages",
+        "/home/albusgive2/unitree_ros2/cyclonedds_ws/install/unitree_go/local/lib/python3.10/dist-packages",
+        "/home/albusgive2/unitree_ros2/cyclonedds_ws/install/unitree_api/local/lib/python3.10/dist-packages",
+        "/home/albusgive2/rlfw/rlfw_interface/install/rlfw_msgs/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
 }

@@ -22,6 +22,19 @@ extend/equality/.cache/
 
 extend/plugin/.cache/
 
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.uv/
+uv.lock
+skills/*/.local/
+
 extend/soft_contact/C++/build/
 extend/soft_contact/C++/.cache/
 

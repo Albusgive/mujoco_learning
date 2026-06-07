@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mujoco-learning-docs"
+version = "0.1.0"
+description = "Local FastAPI documentation site and Python MuJoCo tutorial environment."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.111",
+    "uvicorn[standard]>=0.30",
+    "jinja2>=3.1",
+    "markdown>=3.6",
+    "pymdown-extensions>=10.8",
+    "pygments>=2.18",
+    "mujoco>=3.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "httpx>=0.27",
+]
+
+[project.scripts]
+mujoco_learning_doc = "mujoco_learning_doc.main:run"
+
+[tool.setuptools]
+packages = ["mujoco_learning_doc"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+mujoco_learning_doc = ["templates/*.html", "static/*.css", "static/*.js"]

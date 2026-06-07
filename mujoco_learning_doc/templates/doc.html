@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title }} - MuJoCo 教程</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="/">
+          <span class="brand-mark">MJ</span>
+          <span>
+            <strong>MuJoCo 教程</strong>
+            <small>本地文档站</small>
+          </span>
+        </a>
+
+        <label class="search">
+          <span>搜索</span>
+          <input id="doc-search" type="search" placeholder="章节、路径、主题" autocomplete="off">
+        </label>
+
+        <nav class="doc-nav" aria-label="教程目录">
+          {% if home_docs %}
+          <section class="doc-home">
+            {% for item in home_docs %}
+            <a
+              class="doc-link doc-link-home {% if item.path == active_path %}is-active{% endif %}"
+              href="{{ item.url }}"
+              data-title="{{ item.title | lower }}"
+              data-path="{{ item.path | lower }}"
+            >
+              <span>{{ item.title }}</span>
+            </a>
+            {% endfor %}
+          </section>
+          {% endif %}
+
+          {% for group in groups %}
+          <details class="doc-group" {% if group.is_open %}open{% endif %}>
+            <summary>
+              <span>{{ group.title }}</span>
+              <small>{{ group.items | length }}</small>
+            </summary>
+            <div class="doc-group-items">
+            {% for item in group.items %}
+            <a
+              class="doc-link {% if item.path == active_path %}is-active{% endif %}"
+              href="{{ item.url }}"
+              data-title="{{ item.title | lower }}"
+              data-path="{{ item.path | lower }}"
+            >
+              <span>{{ item.title }}</span>
+              <small>{{ item.path }}</small>
+            </a>
+            {% endfor %}
+            </div>
+          </details>
+          {% endfor %}
+        </nav>
+      </aside>
+
+      <main class="content">
+        <article class="markdown-body">
+          {{ content | safe }}
+        </article>
+      </main>
+    </div>
+
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [["$", "$"], ["\\(", "\\)"]],
+          displayMath: [["$$", "$$"], ["\\[", "\\]"]],
+          processEscapes: true,
+          processEnvironments: true,
+        },
+        options: {
+          skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+        },
+      };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <script src="{{ url_for('static', path='app.js') }}"></script>
+  </body>
+</html>

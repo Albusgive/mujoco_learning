@@ -1,13 +1,45 @@
 # 3D绘制
 &emsp;&emsp;mujoco提供显示基础几何体和mujoco提供的一些特殊渲染几何体。查看文档可知mjv_initGeom函数能在渲染场景中增加几何体，mjv_connector可以用mjv_initGeom初始化的几何体绘制提供的一些特殊形状（如箭头，直线等）。mujoco显示画面的原理是通过mjv_updateScene 将仿真数据储存到mjvScene中，这是已经处理好的几何数据，接下来使用mjr_render传递给opengl渲染。我们在绘制过程中是要在仿真的几何数据处理完之后，加入绘制信息，再交给opengl渲染。
 &emsp;&emsp;在mjvScene中添加信息，其实是直接在mjvScene的geoms后面续写，而且要增加ngeom长度。这里通过注释可以理解，mjvScene根据ngeom确定几何体数量再从geoms中获取资源。
-![](../../MJCF/asset/mjvScene.png)
+
+```c
+struct _mjvScene {
+    // abstract geoms
+    int maxgeom;              // size of allocated geom buffer
+    int ngeom;                // number of geoms currently in buffer
+    mjvGeom* geoms;           // buffer for geoms
+    int* geomorder;           // buffer for ordering geoms by distance to camera
+    // ...
+};
+typedef struct _mjvScene mjvScene;
+```
+
 mjv_initGeom函数原型：
-![](../../MJCF/asset/initGeom.png)
+
+```c
+void mjv_initGeom(mjvGeom* geom, int type, const mjtNum size[3],
+                  const mjtNum pos[3], const mjtNum mat[9], const float rgba[4]);
+```
+
 mjv_connector函数原型：
-![](../../MJCF/asset/mjv_connector.png)
+
+```c
+void mjv_connector(mjvGeom* geom, int type, mjtNum width,
+                   const mjtNum from[3], const mjtNum to[3]);
+```
+
 geom是传入的仅绘制的几何体，需要使用mjv_initGeom初始化，type见下面，width是绘制的宽度，这个是对于渲染出来的画面的宽度，from起点，to终点
-![](../../MJCF/asset/mjtGeom.png)
+
+```c
+typedef enum _mjtGeom {
+    // ...
+    mjGEOM_ARROW = 100,     // 箭头
+    mjGEOM_ARROW1,          // 无楔形箭头
+    mjGEOM_ARROW2,          // 双向箭头
+    mjGEOM_LINE,            // 直线
+    // ...
+} mjtGeom;
+```
 这里是可以绘制的几何形状类型，分别是箭头，无楔形箭头，双向箭头，直线。
 <font color=Green>*演示——绘制几何体函数：*</font>
 
@@ -63,13 +95,24 @@ draw_arrow(pos_start2, end2, 0.1, rgba2)
 
 # 2D绘制
 字体尺寸的初始化：
-![](../../MJCF/asset/font_size.png)
+
+```c
+typedef enum _mjtFontScale {
+    mjFONTSCALE_50  = 50,   // 50% 缩放，适用于低分辨率渲染
+    mjFONTSCALE_100 = 100,  // 100% 缩放，默认普通比例
+    mjFONTSCALE_150 = 150,  // 150% 缩放
+    mjFONTSCALE_200 = 200   // 200% 缩放
+} mjtFontScale;
+```
+
 python:         
 ```Python
 context = mujoco.MjrContext(m, mujoco.mjtFontScale.mjFONTSCALE_150)
 ```
-查阅文档我们可知2D绘制要在mjr_render之后进行
-![](../../MJCF/asset/2D_draw_point.png)
+查阅文档我们可知，2D 绘制需要在此之后（例如 `mjr_render` 执行后）进行：
+
+> [!IMPORTANT]
+> `mjr_render` 会在开始渲染时清除视口（Viewport）。因此，所有自定义的 2D 绘制操作（如绘制文本、矩形、表格或标签等）必须在调用 `mjr_render` **之后** 进行，否则绘制的内容会被视口清除覆盖。
 
 <font color=Green>*绘制文本：*</font>           
 

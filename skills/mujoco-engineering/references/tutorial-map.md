@@ -51,7 +51,7 @@ Use repository-relative paths only. Inspect referenced files before coding.
 - Soft contact: `extend/soft_contact/tutorial.md`, `extend/soft_contact/soft_contact.py`, `extend/soft_contact/C++/soft_contact.cpp`, related XML files in `extend/soft_contact/`
 - Ray caster / depth/range sensing: `extend/deep_camera/readme.md`, `extend/deep_camera/C++/RayCasterCamera.hpp`, external repo `https://github.com/Albusgive/mujoco_ray_caster`
 - MJX/JAX experiments: `extend/jax/`
-- Entertainment/redstone demo: `extend/mujoco_red_stone/`
+- Entertainment/redstone demo: `fun/mujoco_red_stone/`
 
 ## Validation Commands
 

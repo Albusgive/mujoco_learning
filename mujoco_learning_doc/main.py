@@ -128,8 +128,6 @@ def section_for(path: Path) -> str:
     relative = path.relative_to(REPO_ROOT)
     if len(relative.parts) == 1:
         return "首页"
-    if relative.parts[:2] == ("extend", "mujoco_red_stone"):
-        return "fun"
     return relative.parts[0]
 
 

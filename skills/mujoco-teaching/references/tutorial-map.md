@@ -53,7 +53,7 @@ Use repository-relative paths only. Do not invent absolute paths.
 - Ray caster / depth/range sensing: `extend/deep_camera/readme.md`; external repo: `https://github.com/Albusgive/mujoco_ray_caster`
 - Equality experiments: `extend/equality/`
 - JAX/MJX examples: `extend/jax/`
-- Entertainment/redstone demo: `extend/mujoco_red_stone/README.md`
+- Entertainment/redstone demo: `fun/mujoco_red_stone/README.md`
 
 ## Official Docs Fallback
 

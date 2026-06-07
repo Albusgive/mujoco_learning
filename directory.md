@@ -97,3 +97,9 @@
 > - 通过mujoco中的ray实现雷达、深度相机和自定义测距传感器
 > > [ray caster](extend/deep_camera/readme.md) | [官方文档: 射线求交](https://mujoco.readthedocs.io/en/latest/programming.html#ray-collisions)
 > > [独立仓库：Albusgive/mujoco_ray_caster](https://github.com/Albusgive/mujoco_ray_caster)
+>
+### 娱乐
+> 红石模拟
+> - 在 MuJoCo 中实现对 Minecraft（我的世界）红石电路及逻辑门的趣味三维仿真
+> > [红石电路仿真(Python)](fun/mujoco_red_stone/README.md)
+

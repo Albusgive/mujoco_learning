@@ -10,90 +10,12 @@
 
 [公式计算可视化（desmos）](https://www.desmos.com/calculator/irtgrwjpkb?lang=zh-CN)         
 
-<div id="solver-visualizer-container" class="solver-visualizer-card">
-  <h3>MuJoCo 接触解算参数实时可视化工具</h3>
-  <div class="visualizer-layout">
-    <div class="canvas-panel">
-      <canvas id="solver-canvas" style="width: 100%; height: 260px;"></canvas>
-      <div class="plot-legend">
-        <span class="legend-item"><span class="color-box d-curve"></span>d(r) - 阻抗</span>
-        <span class="legend-item"><span class="color-box k-curve"></span>k(r) - 相对刚度</span>
-        <span class="legend-item"><span class="color-box b-curve"></span>b(r) - 相对阻尼</span>
-      </div>
-    </div>
-    <div class="controls-panel">
-      <div class="control-group">
-        <label>预设模式 (Presets):</label>
-        <select id="preset-select">
-          <option value="custom">自定义 (Custom)</option>
-          <option value="rubber">橡胶球 (Rubber Ball)</option>
-          <option value="metal">牛顿摆/金属 (Newton Cradle)</option>
-          <option value="cushion">缓冲垫 (Cushioning)</option>
-        </select>
-      </div>
+### 接触参数及求解曲线实时可视化工具
+> 💡 **提示**：本工具为交互式 Web 绘图组件。如果你正在直接阅读 Markdown 源文件，此处的交互组件仅在本地部署的 Web 文档服务中渲染运行。
+> - 如果希望进行交互式参数调节，请在终端运行文档服务后通过浏览器访问本页面。
+> - 你也可以直接点击访问在线的 [Desmos 交互式计算与波形绘制页面](https://www.desmos.com/calculator/irtgrwjpkb?lang=zh-CN)。
 
-      <div class="tab-container">
-        <button class="tab-btn active" onclick="switchTab('imp')">solimp 阻抗曲线</button>
-        <button class="tab-btn" onclick="switchTab('ref')">solref 回弹参考</button>
-      </div>
-
-      <!-- solimp parameters -->
-      <div id="imp-controls" class="tab-content active">
-        <div class="slider-item">
-          <label>dmin (d₀): <span id="val-d0">0.9</span></label>
-          <input type="range" id="param-d0" min="0" max="1" step="0.01" value="0.9">
-        </div>
-        <div class="slider-item">
-          <label>dmax (dwidth): <span id="val-dwidth">0.95</span></label>
-          <input type="range" id="param-dwidth" min="0.0001" max="0.9999" step="0.01" value="0.95">
-        </div>
-        <div class="slider-item">
-          <label>width: <span id="val-width">0.001</span></label>
-          <input type="range" id="param-width" min="0.0001" max="0.01" step="0.0001" value="0.001">
-        </div>
-        <div class="slider-item">
-          <label>midpoint: <span id="val-midpoint">0.5</span></label>
-          <input type="range" id="param-midpoint" min="0.01" max="0.99" step="0.01" value="0.5">
-        </div>
-        <div class="slider-item">
-          <label>power: <span id="val-power">2</span></label>
-          <input type="range" id="param-power" min="1" max="10" step="0.5" value="2">
-        </div>
-      </div>
-
-      <!-- solref parameters -->
-      <div id="ref-controls" class="tab-content">
-        <div class="control-group">
-          <label>参考格式 (Format):</label>
-          <select id="ref-format-select">
-            <option value="standard">标准 (timeconst, dampratio)</option>
-            <option value="direct">直接 (stiffness, damping)</option>
-          </select>
-        </div>
-        <div id="standard-ref-inputs" style="display: flex; flex-direction: column; gap: 14px;">
-          <div class="slider-item">
-            <label>timeconst (τ): <span id="val-timeconst">0.02</span>s</label>
-            <input type="range" id="param-timeconst" min="0.001" max="0.1" step="0.001" value="0.02">
-          </div>
-          <div class="slider-item">
-            <label>dampratio (ζ): <span id="val-dampratio">1.0</span></label>
-            <input type="range" id="param-dampratio" min="0.1" max="5.0" step="0.1" value="1.0">
-          </div>
-        </div>
-        <div id="direct-ref-inputs" style="display: none; flex-direction: column; gap: 14px;">
-          <div class="slider-item">
-            <label>stiffness (k): <span id="val-stiffness">1000</span></label>
-            <input type="range" id="param-stiffness" min="10" max="10000" step="10" value="1000">
-          </div>
-          <div class="slider-item">
-            <label>damping (b): <span id="val-damping">10</span></label>
-            <input type="range" id="param-damping" min="1" max="500" step="1" value="10">
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<div id="solver-visualizer-container"></div>
 
 **在这里把碰撞拆解成了下面公式**          
 $$a_{ref}=-bv-kr$$      

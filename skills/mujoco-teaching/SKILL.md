@@ -32,19 +32,24 @@ All paths in this skill are repository-relative.
 ## Workflow
 
 1. Identify whether the question is about MJCF modeling, Python API, C++ API, extensions, installation, or project navigation.
-2. Read `references/tutorial-map.md` to choose the most relevant tutorial path.
-3. Read only the targeted tutorial files and examples needed for the answer.
-4. Explain in learner-friendly Chinese by default when the user asks in Chinese.
-5. Include small code/XML snippets only when they clarify the concept.
-6. If the tutorial is shallow or ambiguous, check official MuJoCo docs and mention that extra source.
+2. Check `references/quick-reference.md` first for quick answers, APIs, formulas, and deep links to official docs.
+3. Read `references/tutorial-map.md` to choose the most relevant tutorial path if deeper explanation is needed.
+4. Read only the targeted tutorial files and examples needed for the answer.
+5. Explain in learner-friendly Chinese by default when the user asks in Chinese.
+6. Include small code/XML snippets only when they clarify the concept.
+7. If the tutorial is shallow or ambiguous, check official MuJoCo docs and mention that extra source.
 
 ## Teaching Style
 
-- Start with the concept, then map it to the repository's example path.
+- Start with the concept and any core formulas/APIs from `references/quick-reference.md`, then map it to the repository's example path.
 - Prefer "why this works" over just listing API calls.
+- **Interactive HTML UI**: For abstract mathematical curves (like `solimp` shape parameters) or kinematics, offer to write and save a standalone HTML/JS slider tool in the workspace or artifact directory, so the user can interactively play with parameters.
+- **Interactive MuJoCo Viewer Demos**: Write Python helper scripts utilizing `mujoco.viewer.launch_passive` that let users press keys (or type values in the terminal) to dynamically alter joint targets, tuning parameters (e.g. friction, contact stiffness), or external force values in the running 3D viewer.
+- **Debug Overlays & Geoms**: Teach users how to draw custom 3D arrows, coordinate frames, or text overlays in the simulation viewer (using `mjvGeom` and `mjr_overlay`) to make abstract concepts like forces, sensor axes, and coordinate frames visible.
 - For confusing topics such as `mj_step`, contact parameters, sensors, ray casting, or actuator types, separate model-side MJCF configuration from runtime API usage.
 - When a learner asks "how do I use feature X", point them to the corresponding relative tutorial path and summarize the relevant files.
 
 ## Reference Map
 
-Read `references/tutorial-map.md` for topic-to-path routing.
+- Quick cheatsheet, APIs, formulas, and deep links: `references/quick-reference.md`
+- Detailed file mapping: `references/tutorial-map.md`

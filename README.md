@@ -88,34 +88,62 @@ uvicorn mujoco_learning_doc.main:app --reload --host 127.0.0.1 --port 8000
 
 浏览器打开 <http://127.0.0.1:8000> 即可查看本仓库的 Markdown 教程。文档站会自动读取 `README.md`、`directory.md` 以及各章节的 `tutorial.md` / `readme.md`，并支持目录导航、搜索、图片显示和代码高亮。
 
-## Codex Skills
-本仓库在 `skills/` 下提供两个 Codex skill：
+## Agent Skills (智能体技能安装)
+本仓库在 `skills/` 下提供三个智能体技能（Skills）：
 
-- `skills/mujoco-teaching`：教学型。用于向 agent 提问 MuJoCo 概念、教程内容、学习路线和 API 原理。
-- `skills/mujoco-engineering`：工程型。用于让 agent 复现示例、开发 MJCF/Python/C++ MuJoCo 功能、查找对应教程代码路径。
+- `skills/mujoco-teaching`：教学型。用于向 Agent 提问 MuJoCo 概念、教程内容、学习路线和 API 原理。
+- `skills/mujoco-engineering`：工程型。用于让 Agent 复现示例、开发 MJCF/Python/C++ MuJoCo 功能、查找对应教程代码路径。
+- `skills/mujoco-cpp-build`：构建型。一键编译构建本仓库 C++ 实例与工具，支持源码编译版与 Release 依赖版，并在编译前主动向用户提问构建需求。
 
-同时提供 OpenCode 和 Claude Code 的项目级适配入口：
+为了让不同平台的智能体（Agent）能识别和使用这些技能，我们提供了以下几种安装配置方式：
 
-- OpenCode：`.opencode/skills/mujoco-teaching`、`.opencode/skills/mujoco-engineering`
-- Claude Code：`.claude/skills/mujoco-teaching`、`.claude/skills/mujoco-engineering`
+### 1. Antigravity (Gemini Advanced Agentic Coding)
+* **工作区自动加载**：当您在当前仓库根目录下运行 Antigravity 时，CLI 将自动扫描并加载 `skills/` 目录下的所有技能，无需额外安装。
+* **全局安装**：如果您在其他工作区也想让 Antigravity 调用这些技能，可将其复制到系统全局插件目录：
+  ```bash
+  mkdir -p ~/.gemini/config/skills
+  cp -r skills/mujoco-teaching skills/mujoco-engineering skills/mujoco-cpp-build ~/.gemini/config/skills/
+  ```
 
-这些适配入口会引用 `skills/` 下的 canonical skill 内容，避免维护多份重复说明。
+### 2. Claude Code
+* **工作区级适配**：Claude Code 会自动加载项目根目录下的 `.claude/skills/` 适配器。这些适配器已经配置好并指向了 `skills/` 下的 canonical 技能文件。
+* **全局安装**：如果要在其他目录下也能够使用，可将 canonical 目录直接安装至 Claude 的全局路径下：
+  ```bash
+  mkdir -p ~/.claude/skills
+  cp -r skills/mujoco-teaching skills/mujoco-engineering skills/mujoco-cpp-build ~/.claude/skills/
+  ```
 
-发布到 GitHub 后，可用 Codex 的 `skill-installer` 从仓库路径安装：
+### 3. OpenCode
+* **工作区级适配**：OpenCode 会自动加载项目根目录下的 `.opencode/skills/` 适配器。
+* **全局安装**：如果需要全局使用，复制技能文件夹至 OpenCode 全局技能目录：
+  ```bash
+  mkdir -p ~/.opencode/skills
+  cp -r skills/mujoco-teaching skills/mujoco-engineering skills/mujoco-cpp-build ~/.opencode/skills/
+  ```
 
-```bash
-python scripts/install-skill-from-github.py --repo Albusgive/mujoco_learning --path skills/mujoco-teaching skills/mujoco-engineering
-```
+### 4. Codex
+* **通过 skill-installer 从 GitHub 远程安装**：
+  ```bash
+  python -m skill_installer --repo Albusgive/mujoco_learning --path skills/mujoco-teaching skills/mujoco-engineering skills/mujoco-cpp-build
+  ```
+* **本地手动安装**：直接将技能文件夹拷贝至 Codex 本地技能存储路径：
+  ```bash
+  mkdir -p ~/.codex/skills
+  cp -r skills/mujoco-teaching skills/mujoco-engineering skills/mujoco-cpp-build ~/.codex/skills/
+  ```
 
-安装完成后重启 Codex。skill 内只使用仓库相对路径，不包含开发电脑的绝对路径。
+安装/复制完成后，请重启对应的命令行工具或 Agent 客户端。
 
-如果 Codex 不在本仓库工作区内运行，skill 会先尝试自动寻找本仓库。首次找不到时，agent 会询问本机仓库路径，并保存到已安装 skill 目录下的本地配置文件：
+---
+
+## 跨工作区运行时的仓库路径设置
+如果智能体（如 Antigravity / Codex / Claude Code 等）未在当前仓库的工作区中运行，技能会在加载时尝试动态搜寻本仓库。首次找不到时，智能体主动询问您本仓库的克隆路径，并自动将其保存到已安装技能目录下的本地配置文件中：
 
 ```text
 <installed-skill>/.local/repo_path.txt
 ```
 
-`.local/repo_path.txt` 是普通文件路径，Python 脚本会用当前系统的路径规则读写，Windows、macOS、Linux 都可用。不同系统可按下面方式手动设置：
+`.local/repo_path.txt` 是普通路径文本文件。如果需要，您也可以通过运行技能中的 `find_repo.py` 脚本来手动设置或清除该缓存路径。不同系统设置方式如下：
 
 <details>
 <summary><strong>macOS / Linux</strong></summary>
@@ -123,6 +151,7 @@ python scripts/install-skill-from-github.py --repo Albusgive/mujoco_learning --p
 ```bash
 python ~/.codex/skills/mujoco-engineering/scripts/find_repo.py --set /path/to/mujoco_learning
 python ~/.codex/skills/mujoco-teaching/scripts/find_repo.py --set /path/to/mujoco_learning
+python ~/.codex/skills/mujoco-cpp-build/scripts/find_repo.py --set /path/to/mujoco_learning
 ```
 
 清除保存路径：
@@ -130,6 +159,7 @@ python ~/.codex/skills/mujoco-teaching/scripts/find_repo.py --set /path/to/mujoc
 ```bash
 python ~/.codex/skills/mujoco-engineering/scripts/find_repo.py --clear
 python ~/.codex/skills/mujoco-teaching/scripts/find_repo.py --clear
+python ~/.codex/skills/mujoco-cpp-build/scripts/find_repo.py --clear
 ```
 
 </details>
@@ -140,6 +170,7 @@ python ~/.codex/skills/mujoco-teaching/scripts/find_repo.py --clear
 ```powershell
 python $HOME\.codex\skills\mujoco-engineering\scripts\find_repo.py --set C:\path\to\mujoco_learning
 python $HOME\.codex\skills\mujoco-teaching\scripts\find_repo.py --set C:\path\to\mujoco_learning
+python $HOME\.codex\skills\mujoco-cpp-build\scripts\find_repo.py --set C:\path\to\mujoco_learning
 ```
 
 清除保存路径：
@@ -147,6 +178,7 @@ python $HOME\.codex\skills\mujoco-teaching\scripts\find_repo.py --set C:\path\to
 ```powershell
 python $HOME\.codex\skills\mujoco-engineering\scripts\find_repo.py --clear
 python $HOME\.codex\skills\mujoco-teaching\scripts\find_repo.py --clear
+python $HOME\.codex\skills\mujoco-cpp-build\scripts\find_repo.py --clear
 ```
 
 </details>
@@ -157,6 +189,7 @@ python $HOME\.codex\skills\mujoco-teaching\scripts\find_repo.py --clear
 ```bat
 python %USERPROFILE%\.codex\skills\mujoco-engineering\scripts\find_repo.py --set C:\path\to\mujoco_learning
 python %USERPROFILE%\.codex\skills\mujoco-teaching\scripts\find_repo.py --set C:\path\to\mujoco_learning
+python %USERPROFILE%\.codex\skills\mujoco-cpp-build\scripts\find_repo.py --set C:\path\to\mujoco_learning
 ```
 
 清除保存路径：
@@ -164,6 +197,7 @@ python %USERPROFILE%\.codex\skills\mujoco-teaching\scripts\find_repo.py --set C:
 ```bat
 python %USERPROFILE%\.codex\skills\mujoco-engineering\scripts\find_repo.py --clear
 python %USERPROFILE%\.codex\skills\mujoco-teaching\scripts\find_repo.py --clear
+python %USERPROFILE%\.codex\skills\mujoco-cpp-build\scripts\find_repo.py --clear
 ```
 
 </details>

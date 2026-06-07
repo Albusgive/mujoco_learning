@@ -25,21 +25,23 @@ All reference paths below are repository-relative and safe to show in public doc
 ## Engineering Workflow
 
 1. Classify the task: MJCF authoring, Python API, C++ API, build/config, sensor/rendering, ray casting, contact/solver tuning, or extension.
-2. Read `references/tutorial-map.md` and select the closest tutorial and code example.
-3. Inspect the referenced source files before implementing.
-4. Reuse repository patterns and asset paths rather than inventing new structure.
-5. If engineering work repeatedly fails because of parameter uncertainty, unstable behavior, or unclear validation results, selectively build a minimal test demo from the repository's test models, XML parameters, and chapter examples to isolate the issue.
-6. Choose validation based on the agent/model capability:
+2. Check `references/quick-reference.md` first for core API usage, syntax, formulas, and official documentation deep links.
+3. Read `references/tutorial-map.md` and select the closest tutorial and code example if more details are needed.
+4. Inspect the referenced source files before implementing.
+5. Reuse repository patterns and asset paths rather than inventing new structure.
+6. If engineering work repeatedly fails because of parameter uncertainty, unstable behavior, or unclear validation results, selectively build a minimal test demo from the repository's test models, XML parameters, and chapter examples to isolate the issue.
+7. Choose validation based on the agent/model capability:
    - If the agent can understand images or video, it may render screenshots or record a short demo from the simulation, then compare the demo result with the expected behavior and with the real development output. It can also read numeric state directly from simulation when that is more precise.
    - If the agent is text-only, it must validate through custom simulation outputs: print, log, or assert positions, velocities, contacts, sensor values, forces, ray distances, rendered buffer metadata, or other task-specific data.
-7. Validate with the smallest relevant command first:
+8. Validate with the smallest relevant command first:
    - Python examples: run the chapter script in the target Python/conda environment.
-   - C++ examples: inspect `CMakeLists.txt`, then build in that chapter's build directory.
+   - C++ examples: inspect `CMakeLists.txt`, then build in that chapter's build directory (or use `mujoco-cpp-build` skill).
    - Docs site changes: run `python -m compileall mujoco_learning_doc` and verify affected routes.
-8. If a MuJoCo API detail is uncertain, consult the official docs after checking the tutorial.
+9. If a MuJoCo API detail is uncertain, consult `references/quick-reference.md` or official docs after checking the tutorial.
 
 ## Implementation Guidance
 
+- Check `references/quick-reference.md` for fast, copy-pasteable implementation templates.
 - Keep MJCF paths relative to the scene XML or repository root, matching local examples.
 - Separate model-side configuration from runtime code: MJCF defines bodies/geoms/joints/sensors/actuators; Python/C++ loads the model, creates data, steps, reads/writes arrays, and renders.
 - For ray or ray caster work, start from `Python/Chapter7-ray/`, `CPP/Chapter8-ray/`, and `extend/deep_camera/`; for maintained ray caster code, use `https://github.com/Albusgive/mujoco_ray_caster`.
@@ -49,4 +51,5 @@ All reference paths below are repository-relative and safe to show in public doc
 
 ## Reference Map
 
-Read `references/tutorial-map.md` for topic-to-path routing and example files.
+- Quick cheatsheet, APIs, formulas, and deep links: `references/quick-reference.md`
+- Detailed file mapping: `references/tutorial-map.md`

@@ -57,11 +57,12 @@ with mujoco.viewer.launch_passive(m, d) as viewer:
       for j in range(3):
         num_vec[i*3+j] = boxs_pos[i][j] - cam_pos[0][j]
     geomid = np.zeros((box_num,1), dtype=np.int32)
+    normal = np.zeros((box_num*3,1), dtype=np.float64)
     geomgroup = np.ones((6, 1))
     dist = np.zeros((box_num,1))
     dist_ratio = np.zeros((box_num,1))
     pnt = cam_pos.reshape(3, 1)
-    mujoco.mj_multiRay(m,d,pnt,num_vec,geomgroup,1,-1,geomid,dist_ratio,box_num,999)
+    mujoco.mj_multiRay(m,d,pnt,num_vec,geomgroup,1,-1,geomid,dist_ratio,normal,box_num,999)
     for i in range(box_num):
       if geomid[i] == -1:
         dist[i] = -1.0
